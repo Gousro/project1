@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class UsersController extends Controller
@@ -50,16 +51,21 @@ class UsersController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user)
     {
+        $userData = User::find($user);
 
-        $user = update($request->all([
-            'name' => $user->name,
-            'email' => $user->email
-        ]));
+        $userData->name = $request->name;
+        $userData->email = $request->email;
 
+        if($userData->password == null || strlen($userData->password) < 8){
 
-        save($user);
+        }
+        if($userData->password != null && strlen($userData->password) > 8){
+            $userData->password = Hash::make($request->password);
+        }
+        
+        $userData->update();
 
         return redirect()->route('admin.users.index');
         
