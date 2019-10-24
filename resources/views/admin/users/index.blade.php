@@ -17,18 +17,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @foreach ($users as $users)   
+                            @foreach ($users as $users)
                             <tr>
                                 <td class="text-center">{{ $users->name }}</td>
                                 <td class="text-center">{{ $users->email }}</td>
                                 <td class="text-center">
-                                <a href="{{ route('admin.users.edit', $users->id) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                <a href="{{ route('admin.users.destroy', $users->id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
+                                    <a href="{{ route('admin.users.edit', $users->id) }}"><button type="button"
+                                            class="btn btn-primary float-right">Edit</button></a>
+
+                                    <form action="{{ route('admin.users.destroy', $users) }}" method="POST"
+                                        class="float-right mr-1">
+                                        @csrf
+                                        {{ method_field( 'DELETE' ) }}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
-                        @endforeach
+                            @endforeach
                         </tbody>
-                </table>
+                    </table>
                 </div>
             </div>
         </div>
